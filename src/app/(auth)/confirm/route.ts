@@ -18,7 +18,7 @@ function isSafeRelativePath(value: string | null): value is string {
 
 function buildErrorRedirect(message: string): string {
   const params = new URLSearchParams({ error: message });
-  return `/auth/error?${params.toString()}`;
+  return `/auth-error?${params.toString()}`;
 }
 
 export async function GET(request: NextRequest) {

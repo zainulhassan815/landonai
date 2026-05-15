@@ -27,9 +27,13 @@ describe("requiresAuth", () => {
   });
 
   it("returns false for auth flow routes", () => {
-    expect(requiresAuth("/auth/login")).toBe(false);
-    expect(requiresAuth("/auth/sign-up")).toBe(false);
-    expect(requiresAuth("/auth/confirm")).toBe(false);
+    expect(requiresAuth("/login")).toBe(false);
+    expect(requiresAuth("/sign-up")).toBe(false);
+    expect(requiresAuth("/forgot-password")).toBe(false);
+    expect(requiresAuth("/update-password")).toBe(false);
+    expect(requiresAuth("/sign-up-success")).toBe(false);
+    expect(requiresAuth("/confirm")).toBe(false);
+    expect(requiresAuth("/auth-error")).toBe(false);
   });
 
   it("does not match lookalike paths that share a prefix but differ in segment", () => {

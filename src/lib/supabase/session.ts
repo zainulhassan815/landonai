@@ -38,7 +38,7 @@ export async function updateSession(request: NextRequest) {
 
   if (!isAuthenticated && requiresAuth(request.nextUrl.pathname)) {
     const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/auth/login";
+    loginUrl.pathname = "/login";
     return NextResponse.redirect(loginUrl);
   }
 

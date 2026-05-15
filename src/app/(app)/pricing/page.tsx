@@ -44,7 +44,7 @@ export default function PricingPage() {
           price={{ amount: "$0" }}
           features={FREE_FEATURES}
           cta={{
-            href: "/auth/sign-up",
+            href: "/sign-up",
             label: "Create account",
             variant: "outline",
           }}
@@ -54,7 +54,7 @@ export default function PricingPage() {
           description="Full access to every tool in the portal."
           price={PRO_PRICE}
           features={PRO_FEATURES}
-          cta={{ href: "/auth/sign-up", label: "Get started" }}
+          cta={{ href: "/sign-up", label: "Get started" }}
           highlighted
         />
       </div>
