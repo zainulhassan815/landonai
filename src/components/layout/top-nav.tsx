@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Bell, HelpCircle, Settings } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { UserMenu } from "@/components/layout/user-menu";
@@ -30,9 +31,50 @@ function UtilityIconLink({
   );
 }
 
-export async function TopNav() {
+function ControlsFallback() {
+  return (
+    <div
+      aria-hidden="true"
+      className="ml-1 flex items-center gap-2 sm:ml-2"
+    >
+      <div className="size-9 animate-pulse rounded-full bg-muted" />
+    </div>
+  );
+}
+
+async function AuthControls() {
   const user = await getCurrentUser();
 
+  if (user) {
+    return (
+      <>
+        <UtilityIconLink href="/account" label="Notifications">
+          <Bell className="size-5" strokeWidth={1.75} />
+        </UtilityIconLink>
+        <UtilityIconLink href="/account" label="Settings">
+          <Settings className="size-5" strokeWidth={1.75} />
+        </UtilityIconLink>
+        <UserMenu
+          email={user.email}
+          initials={getInitialsFromEmail(user.email)}
+        />
+      </>
+    );
+  }
+
+  return (
+    <div className="ml-1 flex items-center gap-2 sm:ml-2">
+      <Button asChild variant="ghost" size="sm">
+        <Link href="/login">Sign in</Link>
+      </Button>
+      <Button asChild size="sm">
+        <Link href="/sign-up">Sign up</Link>
+      </Button>
+    </div>
+  );
+}
+
+export function TopNav() {
   return (
     <header className="sticky top-0 z-20 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
@@ -52,29 +94,9 @@ export async function TopNav() {
             <HelpCircle className="size-5" strokeWidth={1.75} />
           </UtilityIconLink>
 
-          {user ? (
-            <>
-              <UtilityIconLink href="/account" label="Notifications">
-                <Bell className="size-5" strokeWidth={1.75} />
-              </UtilityIconLink>
-              <UtilityIconLink href="/account" label="Settings">
-                <Settings className="size-5" strokeWidth={1.75} />
-              </UtilityIconLink>
-              <UserMenu
-                email={user.email}
-                initials={getInitialsFromEmail(user.email)}
-              />
-            </>
-          ) : (
-            <div className="ml-1 flex items-center gap-2 sm:ml-2">
-              <Button asChild variant="ghost" size="sm">
-                <Link href="/login">Sign in</Link>
-              </Button>
-              <Button asChild size="sm">
-                <Link href="/sign-up">Sign up</Link>
-              </Button>
-            </div>
-          )}
+          <Suspense fallback={<ControlsFallback />}>
+            <AuthControls />
+          </Suspense>
         </div>
       </div>
     </header>
