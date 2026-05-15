@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Bell, HelpCircle, Settings } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { UserMenu } from "@/components/layout/user-menu";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getCurrentUser, getInitialsFromEmail } from "@/lib/auth/current-user";
 
@@ -50,21 +51,29 @@ export async function TopNav() {
           <UtilityIconLink href="/contact" label="Help">
             <HelpCircle className="size-5" strokeWidth={1.75} />
           </UtilityIconLink>
-          <UtilityIconLink href="/account" label="Notifications">
-            <Bell className="size-5" strokeWidth={1.75} />
-          </UtilityIconLink>
-          <UtilityIconLink href="/account" label="Settings">
-            <Settings className="size-5" strokeWidth={1.75} />
-          </UtilityIconLink>
 
           {user ? (
-            <UserMenu
-              state="authenticated"
-              email={user.email}
-              initials={getInitialsFromEmail(user.email)}
-            />
+            <>
+              <UtilityIconLink href="/account" label="Notifications">
+                <Bell className="size-5" strokeWidth={1.75} />
+              </UtilityIconLink>
+              <UtilityIconLink href="/account" label="Settings">
+                <Settings className="size-5" strokeWidth={1.75} />
+              </UtilityIconLink>
+              <UserMenu
+                email={user.email}
+                initials={getInitialsFromEmail(user.email)}
+              />
+            </>
           ) : (
-            <UserMenu state="anonymous" />
+            <div className="ml-1 flex items-center gap-2 sm:ml-2">
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/login">Sign in</Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link href="/sign-up">Sign up</Link>
+              </Button>
+            </div>
           )}
         </div>
       </div>
